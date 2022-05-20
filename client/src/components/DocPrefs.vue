@@ -41,7 +41,8 @@ export default {
             }).then(function(blob) {
                 const url = window.URL.createObjectURL(blob);
                 window.open(url);
-                window.URL.revokeObjectURL(url);
+                // S.O. said to revoke url otherwise it points to same Blob, but apparently it still updates pdf blob when commented out
+                // window.URL.revokeObjectURL(url);
             })
         },
     }

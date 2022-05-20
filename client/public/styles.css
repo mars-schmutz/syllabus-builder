@@ -26,7 +26,8 @@ body {
     height: 5rem;
 }
 
-.top-strip {
+/* For solid color corner accents */
+/* .top-strip {
     position: absolute;
     top: 0;
     left: 0;
@@ -44,12 +45,33 @@ body {
     height: 0;
     border-top: 5rem solid transparent;
     border-right: 5rem solid #124b99;
+} */
+
+/* For color strip corner accents */
+.top-strip {
+    position: absolute;
+    top: -11rem;
+    left: 0;
+    width: 5rem;
+    height: 30rem;
+    transform: rotate(45deg);
+    background-color: var(--it-blue);
+}
+
+.bottom-strip {
+    position: absolute;
+    bottom: -11rem;
+    right: 0;
+    width: 5rem;
+    height: 30rem;
+    transform: rotate(45deg);
+    background-color: var(--it-blue);
 }
 
 .numbers {
     position: absolute;
-    bottom: 0.75rem;
-    right: 0.75rem;
+    bottom: 2rem;
+    right: 2.5rem;
     color: white;
     font-size: 1.5rem;
 }
