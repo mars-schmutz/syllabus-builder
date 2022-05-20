@@ -1,0 +1,59 @@
+body {
+    --it-blue: #124b99;
+}
+
+#app {
+    display: grid;
+    grid-template-columns: 70vw 1fr;
+    grid-template-rows: 1fr auto;
+    grid-template-areas: "header sidebar"
+                        "paper sidebar"
+                        "footer footer";
+}
+
+#toolkit {
+    grid-area: sidebar;
+    border: 1px solid black;
+}
+
+#parts {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#parts button {
+    width: 5rem;
+    height: 5rem;
+}
+
+.top-strip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-bottom: 5rem solid transparent;
+    border-left: 5rem solid #124b99;
+}
+
+.bottom-strip {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-top: 5rem solid transparent;
+    border-right: 5rem solid #124b99;
+}
+
+.numbers {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.edit, .handle, .delete {
+    padding: 0.25rem;
+}

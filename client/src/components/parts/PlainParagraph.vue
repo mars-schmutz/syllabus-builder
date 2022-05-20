@@ -3,7 +3,7 @@
         <i class="delete" @click="deleteItem(id)">&#9587;</i>
         <template v-if="!editMode">
             <i class="handle">&equiv;</i>
-            <span @click="edit">Edit</span>
+            <span class="edit" @click="edit">Edit</span>
             <p>{{ details.text }}</p>
         </template>
         <template v-else>
@@ -45,3 +45,15 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+div {
+    padding: 0.5rem;
+    margin: 0 auto;
+}
+
+p {
+    width: 90%;
+    margin: 0 auto;
+}
+</style>

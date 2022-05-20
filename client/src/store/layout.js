@@ -9,6 +9,7 @@ export const useLayoutStore = defineStore('layout', {
     actions: {
         // Delete item with key id from layout
         deleteItem(id) {
+            console.log(`Deleting item with id ${id}`)
             this.pageLayout = this.pageLayout.filter(item => item.id !== id)
         },
 

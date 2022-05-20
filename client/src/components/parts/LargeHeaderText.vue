@@ -54,17 +54,28 @@
 
 <style scoped>
 div {
-    border: 1px solid black;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
+    padding: 0.5rem;
     margin: 0 auto;
-    width: 50%;
+}
+
+h1 {
+    border-bottom: 5px solid var(--it-blue);
+    color: var(--it-blue);
+    width: 90%;
+    padding: 0;
+    text-transform: uppercase;
+}
+
+p {
+    width: 90%;
+    padding: 0;
+    margin: 0 auto;
+    margin-top: 1rem;
 }
 
 div input, div textarea, div button {
     margin-top: 0.125rem;
     margin-bottom: 0.125rem;
+    display: block;
 }
 </style>

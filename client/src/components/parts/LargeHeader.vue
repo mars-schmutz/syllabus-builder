@@ -3,7 +3,7 @@
         <i @click="deleteItem(id)" class="delete">&#9587;</i>
         <template v-if="!editMode">
             <i class="handle">&equiv;</i>
-            <span @click="edit">Edit</span>
+            <span class="edit" @click="edit">Edit</span>
             <h1>{{ details.header }}</h1>
         </template>
         <template v-else>
@@ -49,9 +49,15 @@ export default {
 
 <style scoped>
 div {
-    border: 1px solid black;
-    padding: 2rem;
+    padding: 0.5rem;
     margin: 0 auto;
-    width: 50%;
+}
+
+h1 {
+    border-bottom: 5px solid #124b99;
+    width: 90%;
+    padding: 0;
+    text-transform: uppercase;
+    color: var(--it-blue);
 }
 </style>
