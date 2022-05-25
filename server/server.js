@@ -5,14 +5,29 @@ const pdfkit = require('pdfkit');
 const app = express();
 const port = 3000;
 
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors());
 
 var counter = 0;
 var pdfOptions = {
     size: 'LETTER',
     bufferPages: true,
+    margins: {
+        top: 120,
+        bottom: 72,
+        left: 72,
+        right: 72
+    }
+};
+const colors = {
+    it_blue: "#124B99",
+};
+var ruler = {
+    doc_start: null,
 }
+
+var prefs = {};
 
 function docSetup(doc) {
     // For solid color corner accents
@@ -33,21 +48,73 @@ function docSetup(doc) {
     // For striped color corner accents
     doc.save()
         .rotate(45, {origin: [30, 150]})
-        .rect(-70, -90, 60, 300)
+        .rect(-70, -90, 55, 300)
         .fill('#124b99')
         .restore()
     
     doc.save()
-        .rotate(45, {origin: [30, 150]})
-        .rect(doc.page.width, doc.page.height, 60, 300)
+        .rotate(45, {origin: [doc.page.width, doc.page.height]})
+        .rect(doc.page.width - 80, doc.page.height - 200, 55, 300)
         .fill('#124b99')
         .restore()
     
     // Program header image
-    doc.image('./assets/it_logo.png', (doc.page.width - 300) / 2, 20, {width: 300});
+    let headerImg = doc.image('./assets/it_logo.png', (doc.page.width - 300) / 2, 20, {width: 300});
+    ruler.doc_start = headerImg.y + headerImg.height;
+}
+
+// Functions to build & return each layout item
+function genLargeHeader(item, doc) {
+    var text = doc.fontSize(20)
+                    .fill(colors.it_blue)
+                    .font('fonts/BebasNeue.otf')
+                    .text(item.details.header, {
+                        align: 'left',
+                    });
+    var line = doc.save()
+                    .rect(text.x, text.y, doc.page.width - (pdfOptions.margins.right + pdfOptions.margins.left), 3)
+                    .fill(colors.it_blue)
+                    .stroke()
+                    .restore();
+    return line;
+}
+
+function applyLayout(layout, doc) {
+    var text = null;
+    var startx = ruler.doc_start;
+
+    // .moveDown() moves the cursor down, not the object
+    for (let i = 0; i < layout.length; i++) {
+        switch(layout[i].type) {
+            case "LargeHeaderText":
+                text = doc.fontSize(20)
+                            .font('fonts/BebasNeue.otf')
+                            .fill(colors.it_blue)
+                            .text(layout[i].details.header, {
+                                align: 'left',
+                            })
+                            .fontSize(12)
+                            .font('fonts/HelveticaNeue-Light.ttf')
+                            .fill("black")
+                            .text(layout[i].details.text, {
+                                align: 'left',
+                            });
+                break;
+            case "LargeHeader":
+                text = genLargeHeader(layout[i], doc);
+                break;
+            default:
+                console.log("Unrecognized layout type: " + layout[i].type);
+        }
+
+        if (text !== null) {
+            text.moveDown(0.5);
+        }
+    }
 }
 
 app.post("/download", (req, res) => {
+    console.log(req.body);
     const doc = new pdfkit(pdfOptions);
     let buffers = [];
 
@@ -62,12 +129,8 @@ app.post("/download", (req, res) => {
         console.log("PDF sent");
     });
 
-    doc.font('Times-Roman')
-        .fontSize(12)
-        .text(`Hello, ${req.body.name}!`, 100, 100)
-        .text(`Counter: ${counter++}`, 100, 130);
-
     docSetup(doc);
+    applyLayout(req.body, doc);
     
     doc.end();
 })
